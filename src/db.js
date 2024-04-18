@@ -1,6 +1,6 @@
 
 import mongoose from 'mongoose';
-
+/** Подключение к Mongodb Atlas */
 const mongoConnect = async (connectionString) => {
     try {
         await mongoose.connect(connectionString, {

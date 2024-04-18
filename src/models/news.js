@@ -1,5 +1,10 @@
 import mongoose from "mongoose";
 
+/**
+ * Схема для новостей
+ * title - заголовок
+ * text - текст новости
+ */
 const NewsSchema = new mongoose.Schema({
     title: {
         type: String,

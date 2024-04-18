@@ -2,13 +2,22 @@
 import express from 'express'
 import routerAPI from './routes/index.js'
 import { mongoConnect } from './db.js';
+import cors from 'cors';
 const config = (await import(`../src/config.js`)).default(process.env.NODE_ENV)
+
+//TODO перетащить в конфиг
+var corsOptions = {
+    origin: "http://localhost:3200"
+  };
 
 const PORT = config.api.PORT || 3201;
 const app = express();
 
+app.use(cors(corsOptions));
+
 app.use(express.json());
 app.disable('etag');
+app.use(express.urlencoded({ extended: true }));
 
 app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -19,7 +28,7 @@ app.use(function (req, res, next) {
 });
 
 app.get('/', (req, res) => {
-    res.status(200).json('All right')
+    res.status(200).json('Welcome to test application.')
 })
 
 

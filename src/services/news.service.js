@@ -11,6 +11,15 @@ class NewsService {
         //     return Block.findAll({ order: [ ['order', 'ASC'], ['id', 'ASC']] })
         // }
     }
+    // возврат новостей с учётом ограничений по атворизации
+    async getMy() {
+        return [
+            {
+                title: 'секретно',
+                text: 'тенст секретной новости'
+            }
+        ]
+    }
     // async getByCodeAndPage(page = null, code = null) {
     //     return Block.findAll({where: {page, code}, order: [['order', 'ASC'], ['id', 'ASC']]});
     // }

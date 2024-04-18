@@ -11,6 +11,16 @@ class NewsController {
             return res.status(500).json({ error: error })
         }
     }
+    async getMy(req, res) {
+        try {         
+            let result = await newsService.getMy()
+            return res.json(result)
+        }
+        catch (error) {
+            console.log(error)
+            return res.status(500).json({ error: error })
+        }
+    }
     // async getBlock(req, res) {
     //     try {         
     //         let result = await blocksService.getByCodeAndPage(req.params.page || null, req.params.code || null)
