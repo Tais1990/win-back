@@ -1,17 +1,21 @@
 import News from "../models/news.js";
+import mongoose from "mongoose";
 
+/**
+ * сервис для работы с новостями
+ */
 class NewsService {
+    /**
+     * Показываем все новости
+     * @returns - массив новостей
+     */
     async getAll() {
-        return await News.find({});
-        
-        // return Block.findAll({ order: [ ['order', 'ASC'], ['id', 'ASC']] })
-        // if (page) {
-        //     return Block.findAll({ where: { page }, order: [ ['order', 'ASC'], ['id', 'ASC'] ] })
-        // } else {
-        //     return Block.findAll({ order: [ ['order', 'ASC'], ['id', 'ASC']] })
-        // }
+        return await News.find({}).populate('author');
     }
-    // возврат новостей с учётом ограничений по атворизации
+    /**
+     * возврат новостей с учётом ограничений по атворизации
+     * @returns - массив новостей
+     */
     async getMy() {
         return [
             {
@@ -20,17 +24,23 @@ class NewsService {
             }
         ]
     }
-    // async getByCodeAndPage(page = null, code = null) {
-    //     return Block.findAll({where: {page, code}, order: [['order', 'ASC'], ['id', 'ASC']]});
-    // }
-    // async update(id, data) {
-    //     try {
-    //         const record = await Block.update(data, {where: {id: id}})
-    //         return Block.findOne({where: {id: id}})
-    //     } catch (error) {
-    //         throw error;
-    //     } 
-    // }
+    /**
+     * Создание новсти
+     * @param {*} form - данные, вводимые пользователем
+     * @param {*} userID - id автора
+     * @returns 
+     */
+    async create(form, userID) {
+        try {
+            const news = await News.create({
+                ...form,
+                author: new mongoose.Types.ObjectId(userID)
+            })
+            return news;
+        } catch (error) {
+            throw error;
+        }
+    }
 }
 
 export default new NewsService();

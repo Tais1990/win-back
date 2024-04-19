@@ -6,14 +6,17 @@ import mongoose from "mongoose";
  * password - пароль
  */
 const UsersSchema = new mongoose.Schema({
+    /** имя */
     name: {
         type: String,
         require: true
     },
+    /** email */
     email: {
         type: String,
         require: true
     },
+    /** пароль зашифрованный */
     password: {
         type: String,
         require: true
