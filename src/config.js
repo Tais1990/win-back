@@ -1,10 +1,16 @@
 
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 /**
  * Конфиги по умолчанию
  */
 const defaultConfig = {
   api: {
-    port: 8000
+    port: 3201
   },
   mongodb: {
     login: 'tais',
@@ -16,6 +22,10 @@ const defaultConfig = {
   },
   auth: {
     secret: "secret-key"
+  },
+  files: {
+    publicDir: 'public',
+    path: path.join(__dirname, '..', 'public', 'files')
   }
 }
 /**

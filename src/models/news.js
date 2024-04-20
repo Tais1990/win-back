@@ -6,6 +6,10 @@ import Users from "./users.js";
  * Схема для новостей
  * title - заголовок
  * text - текст новости
+ * created - дата создания
+ * pubDate - дата публикации
+ * author - автор
+ * status - статус
  */
 const NewsSchema = new mongoose.Schema({
     /** Заголовок новости */
