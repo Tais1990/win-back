@@ -3,6 +3,18 @@ const Schema = mongoose.Schema;
 import Users from "./users.js";
 
 /**
+ * Перечисление со статусами для новостей
+ * new - созданная
+ * published - опубликованная
+ * deleted - удалённая
+ */
+export const EnumStatusNews = {
+    new: 'new',
+    published: 'published', 
+    deleted: 'deleted'
+}
+
+/**
  * Схема для новостей
  * title - заголовок
  * text - текст новости
@@ -42,8 +54,8 @@ const NewsSchema = new mongoose.Schema({
     /** статус новости - новая, опубликовнная, удалённая */
     status: {
         type: String,
-        enum : ['new','published', 'deleted'],
-        default: 'new'
+        enum : Object.values(EnumStatusNews),
+        default: EnumStatusNews.new
     }    
 })
 

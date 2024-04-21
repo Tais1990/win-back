@@ -1,5 +1,5 @@
 import { ForbiddenError, NotFoundError } from "../libs/errors.js";
-import News from "../models/news.js";
+import News, { EnumStatusNews } from "../models/news.js";
 import mongoose from "mongoose";
 
 /**
@@ -68,7 +68,31 @@ class NewsService {
             await News.findOneAndUpdate(filter, newsOne)
             return await News.findOne({_id: form.id});
         } catch (error) {
-            console.log('error', error);
+            throw error;
+        }
+    }
+    /**
+     * удаление новости
+     * @param {*} id - идентификатор новости
+     * @param {*} userID - id текущего пользователя
+     * @returns - данные по удалённой записи
+     */
+    async delete(id, userID) {
+        try {
+            let newsOne = await News.findOne({_id: id})
+            if (!newsOne) {
+                throw new NotFoundError("News not found");
+            }
+            // проверяем, что текущий пользователя является автором            
+            if (newsOne.author.toString() !== userID) {
+                throw new ForbiddenError("You don't have editing rights!")
+            }
+            const filter = { _id: id };
+            newsOne.status = EnumStatusNews.deleted;
+            await News.findOneAndUpdate(filter, newsOne)
+            return await News.findOne({_id: id});            
+
+        } catch(error) {
             throw error;
         }
     }

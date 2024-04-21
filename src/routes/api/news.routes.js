@@ -8,5 +8,6 @@ router.get('/', newsController.getAll)
 router.get('/my', [authJwt.verifyToken], newsController.getMy)
 router.post('/', [authJwt.verifyToken], newsController.create)
 router.put('/', [authJwt.verifyToken], newsController.update)
+router.delete('/:id', [authJwt.verifyToken], newsController.delete)
 
 export default router;
