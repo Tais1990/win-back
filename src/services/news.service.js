@@ -1,3 +1,4 @@
+import { ForbiddenError, NotFoundError } from "../libs/errors.js";
 import News from "../models/news.js";
 import mongoose from "mongoose";
 
@@ -38,6 +39,36 @@ class NewsService {
             })
             return news;
         } catch (error) {
+            throw error;
+        }
+    }
+    /**
+     * Релактирование новости
+     * @param {*} form - данные, вводимые пользователем
+     * @param {*} userID - id автора
+     * @returns 
+     */
+    async update(form, userID) {
+        try {
+            let newsOne = await News.findOne({_id: form.id})
+            if (!newsOne) {
+                throw new NotFoundError("News not found");
+            }
+            // проверяем, что текущий пользователя является автором            
+            if (newsOne.author.toString() !== userID) {
+                throw new ForbiddenError("You don't have editing rights!")
+            }
+            const filter = { _id: form.id };
+            let filds = ['title', 'text', 'pubDate']
+            filds.forEach((field) => {
+                if (Object.keys(form).includes(field)) {
+                    newsOne[field] = form[field]
+                }
+            })
+            await News.findOneAndUpdate(filter, newsOne)
+            return await News.findOne({_id: form.id});
+        } catch (error) {
+            console.log('error', error);
             throw error;
         }
     }

@@ -39,14 +39,28 @@ class NewsController {
         }
     }
     /**
-     * Создание говости
+     * Создание новости
      * @param {*} req - request
      * @param {*} res - response
-     * @returns - массив новостей
+     * @returns - созданная новость
      */
     async create(req, res) {
         try { 
             return res.json(await newsService.create(req.body, getCurrentUser(req)))
+        }
+        catch (error) {
+            return generateResError(res, error);
+        }
+    }
+    /**
+     * Редактирование новости
+     * @param {*} req - request
+     * @param {*} res - response
+     * @returns - отредактированная новость
+     */
+    async update(req, res) {
+        try { 
+            return res.json(await newsService.update(req.body, getCurrentUser(req)))
         }
         catch (error) {
             return generateResError(res, error);
