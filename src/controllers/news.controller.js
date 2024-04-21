@@ -81,6 +81,21 @@ class NewsController {
             return generateResError(res, error);
         }
     }
+    /**
+     * Публикация новости
+     * @param {*} req - request
+     * @param {*} res - response
+     * @returns - новость, которую опубликовали
+     */
+    async publish(req, res) {
+        try {
+            let result = await newsService.publish(req.params.id, getCurrentUser(req))
+            return res.json(result)
+        }
+        catch (error) {
+            return generateResError(res, error);
+        }
+    }
 }
 
 export default new NewsController();

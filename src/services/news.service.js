@@ -85,10 +85,41 @@ class NewsService {
             }
             // проверяем, что текущий пользователя является автором            
             if (newsOne.author.toString() !== userID) {
-                throw new ForbiddenError("You don't have editing rights!")
+                throw new ForbiddenError("You don't have deleted rights!")
             }
             const filter = { _id: id };
             newsOne.status = EnumStatusNews.deleted;
+            await News.findOneAndUpdate(filter, newsOne)
+            return await News.findOne({_id: id});            
+
+        } catch(error) {
+            throw error;
+        }
+    }
+
+    /**
+     * публикация новости
+     * @param {*} id - идентификатор новости
+     * @param {*} userID - id текущего пользователя
+     * @returns - данные по опубликованной записи
+     */
+    async publish(id, userID) {
+        try {
+            let newsOne = await News.findOne({_id: id})
+            if (!newsOne) {
+                throw new NotFoundError("News not found");
+            }
+            // проверяем, что текущий пользователя является автором            
+            if (newsOne.author.toString() !== userID) {
+                throw new ForbiddenError("You don't have publish rights!")
+            }
+            // запрещаем публиковать удалённую запись
+            if (newsOne.status === EnumStatusNews.deleted) {
+                throw new NotFoundError("News was deleted");
+            }
+            const filter = { _id: id };
+            newsOne.status = EnumStatusNews.published;
+            newsOne.pubDate = new Date();
             await News.findOneAndUpdate(filter, newsOne)
             return await News.findOne({_id: id});            
 
