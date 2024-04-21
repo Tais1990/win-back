@@ -1,5 +1,5 @@
 import filesService from '../services/files.service.js'
-import { generateResError } from '../libs/errors.js'
+import { NotFoundError, generateResError } from '../libs/errors.js'
 const config = (await import(`../config.js`)).default(process.env.NODE_ENV)
 
 /**
@@ -14,9 +14,12 @@ class FileController {
      */
     async uploadFile(req, res) {
         try {
-            let result = await filesService.uploadMany(req.files.files)
+            if (!req.files) {
+                throw new NotFoundError('Files not found!')
+            }
+            let result = await filesService.uploadMany(req.files.files.length ? req.files.files : [req.files.files])
             return res.json(result)
-        } catch (e) {
+        } catch (error) {
             return generateResError(res, error);
         }
     }
