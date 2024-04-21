@@ -121,8 +121,25 @@ class NewsService {
             newsOne.status = EnumStatusNews.published;
             newsOne.pubDate = new Date();
             await News.findOneAndUpdate(filter, newsOne)
-            return await News.findOne({_id: id});            
-
+            return await News.findOne({_id: id});
+        } catch(error) {
+            throw error;
+        }
+    }
+    /**
+     * Опубликовать все новости, у которых дата публикации меньше текущей даты
+     */
+    async publishAll() {
+        try {
+            // TODO добавить всё-таки логирование
+            console.log('---Start published---');
+            let currentDate = new Date();
+            let news = (await News.find({status: EnumStatusNews.new, pubDate: {$lt: currentDate}})).map(x => ({id: x._id.toString(), userID: x.author.toString()}))
+            for (const newsOne of news) {
+                await this.publish(newsOne.id, newsOne.userID)
+            }
+            console.log(`---All published---There are ${news.length} news`);
+            return {'result': `There are ${news.length} news`}
         } catch(error) {
             throw error;
         }

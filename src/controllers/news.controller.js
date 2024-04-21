@@ -96,6 +96,21 @@ class NewsController {
             return generateResError(res, error);
         }
     }
+    /**
+     * Публикация новостей - всех, которые надо опубликовать
+     * @param {*} req - request
+     * @param {*} res - response
+     * @returns - результат
+     */
+    async publishAll(req, res) {
+        try {
+            let result = await newsService.publishAll()
+            return res.json(result)
+        }
+        catch (error) {
+            return generateResError(res, error);
+        }
+    }
 }
 
 export default new NewsController();

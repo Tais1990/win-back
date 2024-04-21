@@ -5,6 +5,7 @@ import fileUpload from 'express-fileupload';
 import { mongoConnect } from './db.js';
 import cors from 'cors';
 const config = (await import(`../src/config.js`)).default(process.env.NODE_ENV)
+import { publishAll } from './cron.js'
 
 //TODO перетащить в конфиг
 var corsOptions = {
@@ -41,6 +42,7 @@ const connectionString = `mongodb+srv://${config.mongodb.login}:${config.mongodb
 const start = async () => {
     try {
         await mongoConnect(connectionString);
+        publishAll();
         app.listen(PORT, () => console.log(`Server started on port ${PORT}`))
     } catch (e) {
         console.log(e)
