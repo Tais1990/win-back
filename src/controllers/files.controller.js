@@ -7,15 +7,14 @@ const config = (await import(`../config.js`)).default(process.env.NODE_ENV)
  */
 class FileController {
     /**
-     * Загрузка файла на сервак
+     * Загрузка файлов на сервак
      * @param {*} req - request
      * @param {*} res - response
-     * @returns - url с путём к файлу
+     * @returns - масисв url с путём к файлу
      */
     async uploadFile(req, res) {
         try {
-            const file = req.files.file
-            let result = await filesService.upload(file)
+            let result = await filesService.uploadMany(req.files.files)
             return res.json(result)
         } catch (e) {
             return generateResError(res, error);

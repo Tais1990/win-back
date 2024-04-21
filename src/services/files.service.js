@@ -31,6 +31,23 @@ class FileService {
             throw error;
         }
     }
+    /**
+     * Загрузка нескольких файлов на сервер
+     * @param {*} files - файлы
+     * @returns - масссив с url сервера, куда сохраняем данные
+     */
+    async uploadMany(files) {
+        try {
+            let result = [];
+            for (const file of files) {
+                result.push(await this.upload(file));
+            }
+            return result;
+        } catch(error) {
+            throw error;
+        }
+
+    }
 }
 
 
