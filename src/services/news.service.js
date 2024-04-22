@@ -131,7 +131,7 @@ class NewsService {
      */
     async publishAll() {
         try {
-            // TODO добавить всё-таки логирование
+            // TODO добавить всё-таки логирование через отдельный файл
             console.log('---Start published---');
             let currentDate = new Date();
             let news = (await News.find({status: EnumStatusNews.new, pubDate: {$lt: currentDate}})).map(x => ({id: x._id.toString(), userID: x.author.toString()}))
