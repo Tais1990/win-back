@@ -15,6 +15,7 @@ const start = async () => {
         let news2 = await newsService.create({title: 'заголовок новости для test2', text: 'текст новой новости для test2', pubDate: new Date("2025-04-19T15:59:06.978Z")}, user2.id)
         let news3 = await newsService.create({title: 'заголовок новости для test2 с открытой пубикацией', text: 'текст новой новости для test2 c путой датой публикации', pubDate: null}, user2.id)
         console.log('Новости', news1, news2, news3);
+        return;
 
     } catch (e) {
         console.log(e)
